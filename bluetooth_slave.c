@@ -1,6 +1,6 @@
 #include <SoftwareSerial.h>
 
-SoftwareSerial HC05(2, 3);
+SoftwareSerial HC06(2, 3);
 
 void setup() {
   Serial.begin(9600);
@@ -10,9 +10,11 @@ void setup() {
 }
 
 void loop() {
-  HC05.println("gogogo!!");
-  HC05.println("good");
-  delay(1000);
+  if(HC06.available()){
+    String text = HC06.readStringUntil(0x0A);
+    Serial.println(text);
+  
+  
   // put your main code here, to run repeatedly:
 
 }
