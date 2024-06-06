@@ -1,6 +1,6 @@
 #include <SoftwareSerial.h>
 
-SoftwareSerial HC06(2, 3);
+SoftwareSerial HC05(12, 13);
 
 void setup() {
   Serial.begin(9600);
@@ -10,8 +10,8 @@ void setup() {
 }
 
 void loop() {
-  if(HC06.available()){
-    String text = HC06.readStringUntil(0x0A);
+  if(HC05.available()){
+    String text = HC05.readStringUntil(0x0A);
     Serial.println(text);
   
   
