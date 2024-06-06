@@ -1,6 +1,6 @@
 #include <SoftwareSerial.h>
 
-SoftwareSerial HC05(2, 3);
+SoftwareSerial HC05(12, 13);
 
 void setup() {
   Serial.begin(9600);
