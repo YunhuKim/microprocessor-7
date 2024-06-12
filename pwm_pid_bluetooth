@@ -16,16 +16,16 @@ SoftwareSerial HC05(12, 13);
 #define Encoder_L 2
 
 //pid 변수
-float Pv = 15;
+float Pv = 20;
 float Iv = 0;
-float Dv = 3;
+float Dv = 9;
 float err_P = 0;
 float err_I = 0;
 float err_D = 0;
 float err_B = 0;
 
 int dutyCycle = 0;  // dutyCycle 변수 선언 및 초기화
-int goal = 30;
+int goal = 25;
 float PID_val = 0;
 volatile int estep_L = 0;  // encoderL 함수에서 사용하는 변수
 volatile int estep_readL = 0;  // encoder_read 함수에서 사용하는 변수
