@@ -94,27 +94,9 @@ void setup() {
   DDRB |=  (1 << PB0) | (1 << PB2) | (1 << PB3) | (1 << PB5);
   DDRB &= ~(1 << PB4);
 
-  ////////////////////////////////////////////////////////////
-  // Set registers for SPI communication
-  // - SPCR = 0b 
-  //  >> (1) SPE (SPI Enable): SPI is enabled
-  //  >> (0) DORD (Data Order): MSB first
-  //  >> (1) MSTR (Master/Slave select): Set as SPI Master
-  //  >> (0) CPOL (Clock Polarity): Latch data on rising edge
-  //  >> (0) CPHA (Clock Phase): Data transfer on the falling edge
-  //  >> (01) SPR[1:0] (SPI Clock Rate): Max. CLK freq. of IMU is 1MHz
-  ////////////////////////////////////////////////////////////
-  SPCR |=   (1 << SPE)  | (1 << MSTR) | (1 << SPR1) | (1 << SPR0);
-  SPCR &= ~((1 << DORD) | (1 << CPOL) | (1 << CPHA));
-
-  // Initialize
-  // SS: high (inactive)
+ 
   PORTB |= (1 << PB2);  
-  
 
-
-
-  // Set accel scale
   setup_accel_scale(acc_full_scale);
   pressure_sensor();
 
@@ -148,18 +130,43 @@ while(ADCSRA & (1 << ADSC));
   uint16_t value = ADC;
   Serial.println(value);
   delay(300);
+    if (value < 100) {
+  if (ay < 0.21) {
+    PORTD |= (1 << PD5);
+    PORTD &= ~(1 << PD6);
+    PORTD &= ~(1 << PD7);
+  } else if (ay > 0.21 && ay < 0.38) {
+    PORTD &= ~(1 << PD5);
+    PORTD |= (1 << PD6);
+    PORTD &= ~(1 << PD7);
+  } else if (ay > 0.38) {
+    PORTD &= ~(1 << PD5);
+    PORTD &= ~(1 << PD6);
+    PORTD |= (1 << PD7);
+  }
+ } else if (value > 100) {
+  if (ay < 0.10) {
+    PORTD |= (1 << PD5);
+    PORTD &= ~(1 << PD6);
+    PORTD &= ~(1 << PD7);
+  } else if (ay > 0.10 && ay < 0.25) {
+    PORTD &= ~(1 << PD5);
+    PORTD |= (1 << PD6);
+    PORTD &= ~(1 << PD7);
+  } else if (ay > 0.25) {
+    PORTD &= ~(1 << PD5);
+    PORTD &= ~(1 << PD6);
+    PORTD |= (1 << PD7);
+  }
+ } else {
+  // If none of the conditions are met, turn off all LEDs
+  PORTD &= ~(1 << PD5);
+  PORTD &= ~(1 << PD6);
+  PORTD &= ~(1 << PD7);
+ }
+ 
 
-
-
-
-  sprintf(message, "ax = %s, ay = %s, az = %s", ax_str, ay_str, az_str);
-  Serial.println(message);
-
-  if(ay > 0.50 & value > 100){
-  PORTB |= (1 << PB0);  // PB0 핀을 HIGH로 설정
-} else {
-  PORTB &= ~(1 << PB0);  // PB0 핀을 LOW로 설정
-}
+ 
 
 delay(300);  // 딜레이 설정
 
