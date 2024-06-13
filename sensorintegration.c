@@ -118,7 +118,7 @@ void setup() {
   setup_accel_scale(acc_full_scale);
   pressure_sensor();
 
-  delay(1000);
+  delay(300);
 }
 
 void loop() {
@@ -147,7 +147,7 @@ while(ADCSRA & (1 << ADSC));
   ADCSRA |= (1 << ADSC);
   uint16_t value = ADC;
   Serial.println(value);
-  delay(1000);
+  delay(300);
 
 
 
@@ -161,7 +161,7 @@ while(ADCSRA & (1 << ADSC));
   PORTB &= ~(1 << PB0);  // PB0 핀을 LOW로 설정
 }
 
-delay(200);  // 딜레이 설정
+delay(300);  // 딜레이 설정
 
 
 
