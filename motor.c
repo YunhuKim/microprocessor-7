@@ -28,7 +28,10 @@ volatile int estep_readL = 0;
 void encoderL(){
   estep_L++;
 }
-
+// 외부 인터럽트 
+ISR(INT0_vect) {
+  encoderL();  
+  
 void encoder_read(){
   estep_readL=estep_L;
   estep_L=0;
@@ -50,6 +53,7 @@ void pid_control(){
   dutyCycle = (PID_val+255)/2;
 }
 
+}
 //인터럽트
 ISR(TIMER1_COMPA_vect) {
   encoder_read();
@@ -60,10 +64,6 @@ ISR(TIMER1_COMPA_vect) {
   Serial.println(dutyCycle);
   HC05.print("PID_val: ");
   HC05.println(dutyCycle);
-}
-// 외부 인터럽트 
-ISR(INT0_vect) {
-  encoderL();  
 }
 void setup() {
   Serial.begin(9600);
